@@ -7,3 +7,9 @@
 
 ## Scene
 Scene == CONTAINER
+
+
+## run dev server
+```
+myfirstThreejs\my-project> npm run dev
+```
