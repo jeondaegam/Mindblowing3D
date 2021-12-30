@@ -61,12 +61,9 @@ const addStar = () => {
 // length 200의 array를 만들고 초기화한뒤, 각 인덱스마다 addStar 호출
 Array(300).fill().forEach(addStar);
 
-
 // set background img
 const spaceTexture = new THREE.TextureLoader().load('space.jpg');
 scene.background = spaceTexture;
-
-
 
 // make a my face box
 const mineTexture = new THREE.TextureLoader().load('mineblock.jpg');
@@ -83,28 +80,53 @@ const mineTexture = new THREE.TextureLoader().load('mineblock.jpg');
 // pointLightRight.position.set(3,2,2);
 // scene.add(pointLightRight);
 
-
-const mine = new THREE.Mesh(
-    new THREE.BoxGeometry(2,2,2),
-    new THREE.MeshBasicMaterial({map:mineTexture}),
-);
-
-scene.add(mine);
+// const mine = new THREE.Mesh(
+//     new THREE.BoxGeometry(2, 2, 2),
+//     new THREE.MeshBasicMaterial({map: mineTexture}),
+// );
+//
+// scene.add(mine);
 
 // make a moon
 const moonTexture = new THREE.TextureLoader().load('moon.jpg');
 // const normalTexture = new THREE.TextureLoader().load('??');
 
 const moon = new THREE.Mesh(
-    new THREE.SphereGeometry(3,25,25), // object 생성.
+    new THREE.SphereGeometry(3, 25, 25), // object 생성.
     new THREE.MeshStandardMaterial({
       map: moonTexture,
       // normalMap: normalTexture
     })
 );
-moon.position.set(20,15);
+moon.position.set(20, 15);
 scene.add(moon);
 
+// new block ======================================================
+// const grassBlock = new THREE.BoxGeometry(2, 2, 2);
+// texture
+const grass_texture = new THREE.TextureLoader().load('grass.jpg');
+const side_texture = new THREE.TextureLoader().load('sideGrass.jpg');
+const under_texture = new THREE.TextureLoader().load('underGrass.jpg');
+
+// material
+const materials = [
+  // new THREE.MeshBasicMaterial({map:textureSide, side: THREE.DoubleSide}),
+  new THREE.MeshBasicMaterial({map: side_texture}),
+  new THREE.MeshBasicMaterial({map: side_texture}),
+  new THREE.MeshBasicMaterial({map: grass_texture}),
+  new THREE.MeshBasicMaterial({map: under_texture}),
+  new THREE.MeshBasicMaterial({map: side_texture}),
+  new THREE.MeshBasicMaterial({map: side_texture}),
+];
+
+// combine
+const grassBlock = new THREE.Mesh(
+    new THREE.BoxGeometry(2, 2, 2),
+    materials);
+
+// grassBlock.position.set(-20, 20);
+scene.add(grassBlock);
+// new block ======================================================
 
 // animation loop (동작이 loop 될 수 있게)
 function animate() {
@@ -117,11 +139,13 @@ function animate() {
   torus.rotation.z += 0.01
 
   moon.rotation.x += -0.01;
-  moon.rotation.y += -0.01;
+  moon.rotation.y += -0.005;
+  moon.rotation.z += -0.01;
 
-  mine.rotation.y += 0.02;
+  // mine.rotation.y += 0.02;
+  grassBlock.rotation.y += 0.02;
+
   controls.update();
-
 }
 
 animate();
