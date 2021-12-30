@@ -1,6 +1,7 @@
 import './style.css'
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
+import {min} from "three/examples/jsm/renderers/nodes/ShaderNode";
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75,
@@ -43,7 +44,7 @@ scene.add(lightHelper, gridHelper);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-// so amazing !! create stars
+// create stars
 const addStar = () => {
   const geometry = new THREE.SphereGeometry(0.25, 24, 24); // 작은 size의 구체를 만든다.
   const material = new THREE.MeshStandardMaterial({color: 0xffffff});
@@ -58,13 +59,54 @@ const addStar = () => {
 }
 
 // length 200의 array를 만들고 초기화한뒤, 각 인덱스마다 addStar 호출
-Array(200).fill().forEach(addStar);
+Array(300).fill().forEach(addStar);
 
+
+// set background img
 const spaceTexture = new THREE.TextureLoader().load('space.jpg');
 scene.background = spaceTexture;
 
-// animation loop
-// 동작이 loop 될 수 있게
+
+
+// make a my face box
+const mineTexture = new THREE.TextureLoader().load('mineblock.jpg');
+// mineTexture.wrapS = THREE.RepeatWrapping; // 수평 래핑
+// mineTexture.wrapT = THREE.RepeatWrapping; // 수직 래핑
+// mineTexture.repeat.set(1);
+
+// mineTexture.magFilter = THREE.NearestFilter;
+// const pointLightLeft = new THREE.PointLight(0xff8833,1);
+// pointLightLeft.position.set(-2,1,1);
+// scene.add(pointLightLeft);
+//
+// const pointLightRight = new THREE.PointLight(0x33ff77,1);
+// pointLightRight.position.set(3,2,2);
+// scene.add(pointLightRight);
+
+
+const mine = new THREE.Mesh(
+    new THREE.BoxGeometry(2,2,2),
+    new THREE.MeshBasicMaterial({map:mineTexture}),
+);
+
+scene.add(mine);
+
+// make a moon
+const moonTexture = new THREE.TextureLoader().load('moon.jpg');
+// const normalTexture = new THREE.TextureLoader().load('??');
+
+const moon = new THREE.Mesh(
+    new THREE.SphereGeometry(3,25,25), // object 생성.
+    new THREE.MeshStandardMaterial({
+      map: moonTexture,
+      // normalMap: normalTexture
+    })
+);
+moon.position.set(20,15);
+scene.add(moon);
+
+
+// animation loop (동작이 loop 될 수 있게)
 function animate() {
   requestAnimationFrame(animate);
   renderer.render(scene, camera);
@@ -74,6 +116,10 @@ function animate() {
   torus.rotation.y += 0.005;
   torus.rotation.z += 0.01
 
+  moon.rotation.x += -0.01;
+  moon.rotation.y += -0.01;
+
+  mine.rotation.y += 0.02;
   controls.update();
 
 }
