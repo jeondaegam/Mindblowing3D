@@ -60,6 +60,9 @@ const addStar = () => {
 // length 200의 array를 만들고 초기화한뒤, 각 인덱스마다 addStar 호출
 Array(200).fill().forEach(addStar);
 
+const spaceTexture = new THREE.TextureLoader().load('space.jpg');
+scene.background = spaceTexture;
+
 // animation loop
 // 동작이 loop 될 수 있게
 function animate() {
