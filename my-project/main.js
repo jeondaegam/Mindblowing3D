@@ -43,6 +43,22 @@ scene.add(lightHelper, gridHelper);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
+// so amazing !! create stars
+const addStar = () => {
+  const geometry = new THREE.SphereGeometry(0.25, 24, 24); // 작은 size의 구체를 만든다.
+  const material = new THREE.MeshStandardMaterial({color: 0xffffff});
+  const star = new THREE.Mesh(geometry, material);
+
+  // random으로 점을 흩뿌린다 ?
+  const [x, y, z] = Array(3).fill().map(
+      () => THREE.MathUtils.randFloatSpread(100)); // range 되는 거리, Random float in the interval[-100/2 ~ 100/2]
+
+  star.position.set(x, y, z);
+  scene.add(star);
+}
+
+// length 200의 array를 만들고 초기화한뒤, 각 인덱스마다 addStar 호출
+Array(200).fill().forEach(addStar);
 
 // animation loop
 // 동작이 loop 될 수 있게
