@@ -30,12 +30,13 @@ scene.add(torus);
 
 // 조명
 const pointLight = new THREE.PointLight(0xffffff);
-pointLight.position.set(20, 5, 20);
+pointLight.position.set(30, 30, 20);
 
 // flat light in the room , object 전체에 은은한 조명효과!
 // everything seem equally.
 const ambientLight = new THREE.AmbientLight(0xD8A2F7);
-scene.add(pointLight, ambientLight);
+// scene.add(pointLight);
+scene.add(ambientLight, pointLight);
 
 //
 const lightHelper = new THREE.PointLightHelper(pointLight);
@@ -45,9 +46,14 @@ scene.add(lightHelper, gridHelper);
 const controls = new OrbitControls(camera, renderer.domElement);
 
 // create stars
+
+const colors = [0x6FA8DC, 0xffffff, 0xF4FFB6, 0xEE7BB3];
+console.log(colors[Math.floor(Math.random() * colors.length)]);
 const addStar = () => {
   const geometry = new THREE.SphereGeometry(0.25, 24, 24); // 작은 size의 구체를 만든다.
-  const material = new THREE.MeshStandardMaterial({color: 0xffffff});
+  const material = new THREE.MeshStandardMaterial({
+    color: colors[Math.floor(Math.random() * colors.length)],
+  });
   const star = new THREE.Mesh(geometry, material);
 
   // random으로 점을 흩뿌린다 ?
@@ -55,6 +61,7 @@ const addStar = () => {
       () => THREE.MathUtils.randFloatSpread(100)); // range 되는 거리, Random float in the interval[-100/2 ~ 100/2]
 
   star.position.set(x, y, z);
+  star.rotation.x += 0.2;
   scene.add(star);
 }
 
@@ -89,12 +96,12 @@ const mineTexture = new THREE.TextureLoader().load('mineblock.jpg');
 
 // make a moon
 const moonTexture = new THREE.TextureLoader().load('moon.jpg');
-// const normalTexture = new THREE.TextureLoader().load('??');
 
 const moon = new THREE.Mesh(
     new THREE.SphereGeometry(3, 25, 25), // object 생성.
     new THREE.MeshStandardMaterial({
       map: moonTexture,
+      color: 0xffffff
       // normalMap: normalTexture
     })
 );
@@ -154,3 +161,7 @@ animate();
 //   <h1>Hello Vite!</h1>
 //   <a href="https://vitejs.dev/guide/features.html" target="_blank">Documentation</a>
 // `
+
+export function hello() {
+  return scene;
+}
