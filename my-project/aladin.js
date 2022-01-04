@@ -3,21 +3,7 @@ import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 // import {Threex} from "three/examples/jsm/three"
 console.log("hey");
 
-// const frontImg = document.createElement("img");
-// const backImg = document.createElement("img");
-// const spineImg = document.createElement("img");
-
 const canvas = document.querySelector("#app");
-
-// frontImg.src = "./images/front.jpeg";
-// backImg.src = "./images/back.jpeg";
-// spineImg.src = "./images/spine.jpeg";
-//
-// document.body.appendChild(frontImg);
-// document.body.appendChild(spineImg);
-// document.body.appendChild(backImg);
-
-// canvas.innerText = "gogo";
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75,
@@ -35,26 +21,37 @@ camera.position.setZ(30);
 renderer.render(scene, camera);
 
 // texture of book
-const frontTexture = new THREE.TextureLoader().load("./images/front.jpeg");
-const spineTexture = new THREE.TextureLoader().load("./images/spine.jpeg");
-const backTexture = new THREE.TextureLoader().load("./images/back.jpeg");
 
-// to create high quality texture
-frontTexture.generateMipmaps = false;
-frontTexture.minFilter = THREE.LinearFilter;
-frontTexture.needsUpdate = true;
+const bookCovers = {
+  front: "./images/front.jpeg",
+  spine: "./images/spine.jpeg",
+  back: "./images/back.jpeg"
+};
 
-const materials = [
-  new THREE.MeshBasicMaterial({map: spineTexture}), // right spine
-  new THREE.MeshBasicMaterial({map: spineTexture}), // left spine
-  new THREE.MeshBasicMaterial({map: frontTexture}),
-  new THREE.MeshBasicMaterial({map: frontTexture}),
-  new THREE.MeshBasicMaterial({map: frontTexture}), // front
-  new THREE.MeshBasicMaterial({map: backTexture}), // back
-];
+// create texture of materials
+const getBookMaterials = (urlMap) => {
+  const materialNames = ['edge', 'spine', 'top', 'bottom', 'front', 'back'];
+  return materialNames.map((name) => {
+    // img가 없을 땐 흰색으로
+    if (!urlMap[name]) {
+      return new THREE.MeshBasicMaterial({color: 0xffffff});
+    }
 
+    const texture = new THREE.TextureLoader().load(urlMap[name]);
+
+    // to create high quality texture
+    texture.generateMipmaps = false;
+    texture.minFilter = THREE.LinearFilter;
+    texture.needsUpdate = true;
+
+    return new THREE.MeshBasicMaterial({map: texture});
+  });
+
+}
+
+// combine geometry and book's materials
 const book = new THREE.Mesh(
-    new THREE.BoxGeometry(20, 30, 2), materials
+    new THREE.BoxGeometry(20, 30, 2), getBookMaterials(bookCovers)
 );
 
 scene.add(book);
@@ -103,13 +100,14 @@ function animate() {
   // torus.rotation.y += 0.005;
   // torus.rotation.z += 0.01
   //
-  // book.rotation.x += 0.02;
-  // book.rotation.y += -0.02;
-  // book.rotation.z += 0.02;
+  book.rotation.x += 0.01;
+  book.rotation.y += -0.01;
+  book.rotation.z += 0.01;
 
   // constrols.update();
   // console.log(isClick ? "click" : "not click");
   // isClick = false;
 }
 
+console.log("dd");
 animate();
