@@ -1,6 +1,6 @@
 body {
-  background-color: #22222a;
-  color: #ffffff;
+  background-color: #FB9C9C;
+  color: #FB9C9C;
 
   font-size: 36px;
   line-height: 1.25;
@@ -28,4 +28,13 @@ section.content h1 {
   margin-bottom: 32px;
 }
 
+section.content p {
+  margine-bottom: 256px;
+}
+
+section.content li {
+  margin-bottom: 32px;
+  padding-left: 48px;
+  position:relative;
+}
 
