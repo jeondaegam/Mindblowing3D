@@ -111,9 +111,9 @@ scene.add(moon);
 // new block ======================================================
 // const grassBlock = new THREE.BoxGeometry(2, 2, 2);
 // texture
-const grass_texture = new THREE.TextureLoader().load('grass.jpg');
-const side_texture = new THREE.TextureLoader().load('sideGrass.jpg');
-const under_texture = new THREE.TextureLoader().load('underGrass.jpg');
+const grass_texture = new THREE.TextureLoader().load('/minecraft/images/grass.jpg');
+const side_texture = new THREE.TextureLoader().load('/minecraft/images/sideGrass.jpg');
+const under_texture = new THREE.TextureLoader().load('/minecraft/images/underGrass.jpg');
 
 // material
 const materials = [
