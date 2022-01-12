@@ -8,8 +8,16 @@
     <link rel="stylesheet" href="mainStyle.css">
   </head>
   <body>
-    <div id="app"></div>
-    <canvas id="bg"></canvas>
+<!--    <script type="module" src="/text.js"></script>-->
+    <div class="container">
+      <div class="content">
+        <h1>The Next<br>Dimension</h1>
+        <p>Journey into the next dimension with this crazy particle effect.</p>
+      </div>
+    </div>s
+    <canvas class="webgl"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js" integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/CSSRulePlugin.min.js" integrity="sha512-Aa3UvVB5yhH/dNXMt8nGZDD15Xmntq1ODcavfgT8omSLaomrJKYybWczzc6UJYDUAdqR1hmDJ47V4Ux50PPIuw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="module" src="/main.js"></script>
   <script>
     const content = CSSRulePlugin.getRule('.content:before')
