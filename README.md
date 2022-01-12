@@ -43,3 +43,7 @@ Arrays.fill(arr, 1);
 const pointLight = new THREE.PointLight(0xffffff); // (O)
 const pointLight = new THREE.PointLight('0xffffff'); // (X)
 ```
+
+### GSAP lib
+<https://cdnjs.com/libraries/gsap>  
+GSAP is a JavaScript library for building high-performance animations that work in **every** major browser.

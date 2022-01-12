@@ -9,7 +9,7 @@ const camera = new THREE.PerspectiveCamera(75,
 
 // graphic renderer
 const renderer = new THREE.WebGLRenderer({
-  canvas: document.querySelector('#bg'),
+  canvas: document.querySelector('.webgl'),
 });
 
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -18,13 +18,17 @@ camera.position.setZ(30);
 
 // draw
 renderer.render(scene, camera);
+// renderer.setClearColor('#21282a', 1);
+renderer.setClearColor('#494949', 0.7);
 
 // 원하는 모양의 geometry
 const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
 // const material = new THREE.MeshBasicMaterial({wireframe: true}); // the wrapping paper for an object
 const material = new THREE.PointsMaterial({
-  color: 0xffffff,
-  size: 0.01
+  // color: 0x1414FF,
+  color: 0xfffffff,
+  size: 0.01,
+  blending: THREE.AdditiveBlending
 }); // need a Hex color : 0x"color name"
 // combine geometry + material
 const torus = new THREE.Points(geometry, material);
@@ -37,7 +41,7 @@ pointLight.position.set(30, 30, 20);
 
 // flat light in the room , object 전체에 은은한 조명효과!
 // everything seem equally.
-const ambientLight = new THREE.AmbientLight(0xD8A2F7);
+const ambientLight = new THREE.AmbientLight(0xffffff);
 // // scene.add(pointLight);
 scene.add(ambientLight, pointLight);
 
@@ -48,12 +52,14 @@ scene.add(lightHelper, gridHelper);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-// create stars
+// create stars ===============
+// todo stars 다시 구현해보기
 
-const colors = [0x6FA8DC, 0xffffff, 0xF4FFB6, 0xEE7BB3];
-console.log(colors[Math.floor(Math.random() * colors.length)]);
+
+const colors = [0xffffff];
+// console.log(colors[Math.floor(Math.random() * colors.length)]);
 const addStar = () => {
-  const geometry = new THREE.SphereGeometry(0.25, 24, 24); // 작은 size의 구체를 만든다.
+  const geometry = new THREE.SphereGeometry(0.1, 24, 24); // 작은 size의 구체를 만든다.
   const material = new THREE.MeshStandardMaterial({
     color: colors[Math.floor(Math.random() * colors.length)],
   });
@@ -71,9 +77,38 @@ const addStar = () => {
 // length 200의 array를 만들고 초기화한뒤, 각 인덱스마다 addStar 호출
 Array(300).fill().forEach(addStar);
 
+// ==============================
+document.addEventListener('mousemove', animateParticles);
+
+let mouseX = 0
+let mouseY = 0
+
+function animateParticles(event) {
+  mouseY = event.clientY
+  mouseX = event.clientX
+}
+
+/**
+ * Animate
+ * @type {*|Texture}
+ */
+const clock = new THREE.Clock();
+const tick = () => {
+  const elapsedTime = clock.getElapsedTime();
+
+  //update objects
+  torus.rotation.y = .6*elapsedTime;
+  // starMesh.rotation.x = mouseY * (elapsedTime * 0.00008)
+
+  renderer.render(scene, camera)
+  windonw.requestAnimationFrame(tick);
+}
+
+// ==============================
+
 // set background img
-const spaceTexture = new THREE.TextureLoader().load('space.jpg');
-scene.background = spaceTexture;
+// const spaceTexture = new THREE.TextureLoader().load('space.jpg');
+// scene.background = spaceTexture;
 
 // make a my face box
 const mineTexture = new THREE.TextureLoader().load('mineblock.jpg');
@@ -114,9 +149,12 @@ scene.add(moon);
 // new block ======================================================
 // const grassBlock = new THREE.BoxGeometry(2, 2, 2);
 // texture
-const grass_texture = new THREE.TextureLoader().load('/minecraft/images/grass.jpg');
-const side_texture = new THREE.TextureLoader().load('/minecraft/images/sideGrass.jpg');
-const under_texture = new THREE.TextureLoader().load('/minecraft/images/underGrass.jpg');
+const grass_texture = new THREE.TextureLoader().load(
+    '/minecraft/images/grass.jpg');
+const side_texture = new THREE.TextureLoader().load(
+    '/minecraft/images/sideGrass.jpg');
+const under_texture = new THREE.TextureLoader().load(
+    '/minecraft/images/underGrass.jpg');
 
 // material
 const materials = [
@@ -144,8 +182,8 @@ function animate() {
   renderer.render(scene, camera);
 
   // rotation position scale
-  torus.rotation.x += 0.01;
-  torus.rotation.y += 0.005;
+  // torus.rotation.x += 0.01;
+  torus.rotation.y += 0.01;
   torus.rotation.z += 0.01
 
   moon.rotation.x += -0.01;
